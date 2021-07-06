@@ -9,3 +9,12 @@ exports.searchMovies = CatchAsync(async (req, res, next) => {
     data,
   })
 })
+
+exports.getPopularMovies = CatchAsync(async (req, res, next) => {
+  const data = await Movie.popularMovies()
+
+  res.status(200).json({
+    status: 'success',
+    data,
+  })
+})
