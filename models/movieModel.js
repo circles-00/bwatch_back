@@ -21,3 +21,14 @@ exports.popularMovies = async () => {
     console.log(err)
   }
 }
+
+exports.upcomingMovies = async () => {
+  try {
+    const res = await axios(
+      `${process.env.EXT_API_URL}movie/upcoming?api_key=${process.env.EXT_API_KEY}&language=en-US&page=1`
+    )
+    return res.data
+  } catch (err) {
+    console.log(err)
+  }
+}
