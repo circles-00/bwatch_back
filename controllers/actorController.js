@@ -9,3 +9,12 @@ exports.getActor = CatchAsync(async (req, res, next) => {
     data,
   })
 })
+
+exports.getPopularActors = CatchAsync(async (req, res, next) => {
+  const data = await Actor.getPopularActors()
+
+  res.status(200).json({
+    status: 'success',
+    data,
+  })
+})

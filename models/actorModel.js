@@ -10,3 +10,14 @@ exports.singleActor = async (id) => {
     console.log(err)
   }
 }
+
+exports.popularActors = async () => {
+  try {
+    const res = await axios(
+      `${process.env.EXT_API_URL}person/popular?api_key=${process.env.EXT_API_KEY}&language=en-US&page=1`
+    )
+    return res.data
+  } catch (err) {
+    console.log(err)
+  }
+}
