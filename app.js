@@ -2,7 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const userRouter = require('./routes/userRoutes')
 const movieRouter = require('./routes/movieRoutes')
-const actorRouter = require('./routes/actorRouter')
+const actorRouter = require('./routes/actorRoutes')
 
 const app = express()
 
