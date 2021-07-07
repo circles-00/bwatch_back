@@ -2,6 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const userRouter = require('./routes/userRoutes')
 const movieRouter = require('./routes/movieRoutes')
+const actorRouter = require('./routes/actorRouter')
 
 const app = express()
 
@@ -15,5 +16,6 @@ app.use(express.json())
 //@@desc Use defined routes
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/movies', movieRouter)
+app.use('/api/v1/actors', actorRouter)
 
 module.exports = app

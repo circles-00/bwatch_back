@@ -1,6 +1,5 @@
 const axios = require('axios')
 
-//https://api.themoviedb.org/3/movie/{movie_id}?api_key=3951320f561eee83f44ed08fc503df73&language=en-US
 exports.singleMovie = async (id) => {
   try {
     const res = await axios(
