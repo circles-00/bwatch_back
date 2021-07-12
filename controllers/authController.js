@@ -25,7 +25,12 @@ exports.signup = async (req, res, next) => {
       status: 'success',
       token,
       data: {
-        user: newUser,
+        user: {
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          email: newUser.email,
+          avatar: newUser.avatar,
+        },
       },
     })
   } catch (err) {
@@ -58,6 +63,9 @@ exports.login = catchAsync(async (req, res, next) => {
   const token = signToken(user._id)
   res.status(200).json({
     status: 'success',
+    firstName: user.firstName,
+    lastName: user.lastName,
+    avatar: user.avatar,
     token,
   })
 })
