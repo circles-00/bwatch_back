@@ -3,7 +3,7 @@ const actorController = require('../controllers/actorController')
 
 const router = express.Router()
 
-router.get('/:id', actorController.getActor)
-router.get('/popular', actorController.getPopularActors)
+router.route('/:id').get(actorController.getActor)
+router.route('/popular').get(actorController.getPopularActors)
 
 module.exports = router
