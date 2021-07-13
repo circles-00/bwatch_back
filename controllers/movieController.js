@@ -10,6 +10,24 @@ exports.getMovie = CatchAsync(async (req, res, next) => {
   })
 })
 
+exports.getRecommended = CatchAsync(async (req, res, next) => {
+  const data = await Movie.recommendedMovies(req.params.id)
+
+  res.status(200).json({
+    status: 'sucess',
+    data,
+  })
+})
+
+exports.getTopMovies = CatchAsync(async (req, res, next) => {
+  const data = await Movie.topMovies()
+
+  res.status(200).json({
+    status: 'sucess',
+    data,
+  })
+})
+
 exports.searchMovies = CatchAsync(async (req, res, next) => {
   const data = await Movie.searchMovie(req.body.movieName)
 
