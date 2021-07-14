@@ -149,7 +149,7 @@ exports.addFavoriteMovies = catchAsync(async (req, res, next) => {
   const ids = Array.from(req.user.favMovies)
   console.log(ids[0])
 
-  if (ids.find((elem) => elem !== movieId)) {
+  if (!ids.find((elem) => elem === movieId)) {
     await User.findOneAndUpdate(
       {
         email: userEmail,
