@@ -34,6 +34,11 @@ const userSchema = new mongoose.Schema({
       },
     },
   },
+  favMovies: {
+    type: [Number],
+    unique: true,
+  },
+  passwordChangedAt: Date,
 })
 
 /* @@desc Encrypt password before storing it into the database
@@ -55,6 +60,37 @@ userSchema.methods.correctPassword = async function (
 ) {
   return await bcrypt.compare(candidatePassword, userPassword)
 }
+
+userSchema.methods.changedPasswordAfter = async function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimeStamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    )
+    return JWTTimestamp < changedTimeStamp
+  }
+
+  return false
+}
+
+userSchema.methods.FavoriteMovies = async function () {
+  return this.favMovies
+}
+
+// userSchema.methods.addFavoriteMovie = async function (id) {
+//   await this.findOneAndReplace(
+//     {
+//       email: this.email,
+//     },
+//     {
+//       $push: {
+//         favMovies: id,
+//       },
+//     }
+//   )
+
+//   return 'success'
+// }
 
 const User = mongoose.model('User', userSchema)
 
