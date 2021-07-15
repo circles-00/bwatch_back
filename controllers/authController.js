@@ -126,6 +126,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   next()
 })
 
+// Favorite List
 exports.getFavorites = catchAsync(async (req, res, next) => {
   const data = await req.user.FavoriteMovies()
 
@@ -204,5 +205,81 @@ exports.removeFavoriteMovies = catchAsync(async (req, res, next) => {
 
   return res.status(404).json({
     status: 'failed, movie is not added as favorite',
+  })
+})
+
+// Watch-List
+exports.getWatchList = catchAsync(async (req, res, next) => {
+  const data = await req.user.WatchList()
+
+  if (data !== undefined) {
+    return res.status(200).json({
+      status: 'success',
+      data,
+    })
+  }
+
+  return res.status(404).json({
+    status: 'failed',
+  })
+})
+
+exports.addToWatchList = catchAsync(async (req, res, next) => {
+  const userEmail = req.user.email
+  const movieId = parseInt(req.params.id, 10)
+  const ids = Array.from(req.user.watchList)
+
+  if (!ids.find((elem) => elem === movieId)) {
+    await User.findOneAndUpdate(
+      {
+        email: userEmail,
+      },
+      {
+        $push: {
+          watchList: movieId,
+        },
+      }
+    )
+
+    const status = 'success'
+    if (status === 'success') {
+      return res.status(200).json({
+        status: 'success',
+      })
+    }
+  }
+
+  return res.status(404).json({
+    status: 'failed, movie already added to watch-list',
+  })
+})
+
+exports.removeFromWatchList = catchAsync(async (req, res, next) => {
+  const userEmail = req.user.email
+  const movieId = parseInt(req.params.id, 10)
+  const ids = Array.from(req.user.watchList)
+
+  if (ids.find((elem) => elem === movieId)) {
+    await User.findOneAndUpdate(
+      {
+        email: userEmail,
+      },
+      {
+        $pullAll: {
+          watchList: [movieId],
+        },
+      }
+    )
+
+    const status = 'success'
+    if (status === 'success') {
+      return res.status(200).json({
+        status: 'success',
+      })
+    }
+  }
+
+  return res.status(404).json({
+    status: 'failed, movie is not added to watch-list',
   })
 })

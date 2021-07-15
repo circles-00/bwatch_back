@@ -38,6 +38,10 @@ const userSchema = new mongoose.Schema({
     type: [Number],
     unique: true,
   },
+  watchList: {
+    type: [Number],
+    unique: true,
+  },
   passwordChangedAt: Date,
 })
 
@@ -77,20 +81,9 @@ userSchema.methods.FavoriteMovies = async function () {
   return this.favMovies
 }
 
-// userSchema.methods.addFavoriteMovie = async function (id) {
-//   await this.findOneAndReplace(
-//     {
-//       email: this.email,
-//     },
-//     {
-//       $push: {
-//         favMovies: id,
-//       },
-//     }
-//   )
-
-//   return 'success'
-// }
+userSchema.methods.WatchList = async function () {
+  return this.watchList
+}
 
 const User = mongoose.model('User', userSchema)
 
