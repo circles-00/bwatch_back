@@ -173,3 +173,36 @@ exports.addFavoriteMovies = catchAsync(async (req, res, next) => {
     status: 'failed, movie already added as favorite',
   })
 })
+
+exports.removeFavoriteMovies = catchAsync(async (req, res, next) => {
+  // console.log(req.user)
+  const userEmail = req.user.email
+  const movieId = parseInt(req.params.id, 10)
+  // const status = await req.user.addFavoriteMovie(req.params.id)
+  const ids = Array.from(req.user.favMovies)
+  // console.log(ids[0])
+
+  if (ids.find((elem) => elem === movieId)) {
+    await User.findOneAndUpdate(
+      {
+        email: userEmail,
+      },
+      {
+        $pullAll: {
+          favMovies: [movieId],
+        },
+      }
+    )
+
+    const status = 'success'
+    if (status === 'success') {
+      return res.status(200).json({
+        status: 'success',
+      })
+    }
+  }
+
+  return res.status(404).json({
+    status: 'failed, movie is not added as favorite',
+  })
+})

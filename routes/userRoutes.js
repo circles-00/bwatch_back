@@ -12,5 +12,8 @@ router
 router
   .route('/favorites/add/:id')
   .get(authController.protect, authController.addFavoriteMovies)
+router
+  .route('/favorites/remove/:id')
+  .get(authController.protect, authController.removeFavoriteMovies)
 
 module.exports = router
