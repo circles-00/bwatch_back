@@ -1,6 +1,10 @@
 /* eslint-disable arrow-body-style */
 const { promisify } = require('util')
 const jwt = require('jsonwebtoken')
+const multer = require('multer')
+const fs = require('fs')
+const path = require('path')
+const randomString = require('randomstring')
 const User = require('../models/userModel')
 const catchAsync = require('../utils/catchAsync')
 
@@ -281,5 +285,54 @@ exports.removeFromWatchList = catchAsync(async (req, res, next) => {
 
   return res.status(404).json({
     status: 'failed, movie is not added to watch-list',
+  })
+})
+
+// Upload profile pictures
+
+// 1) Generate random unique string for filename
+// console.log(fileName)
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads')
+  },
+  filename: (req, file, cb) => {
+    const name = randomString.generate()
+    const ext = file.originalname.split('.')[1]
+    req.filename = `${name}.${ext}`
+    cb(null, `${name}.${ext}`)
+    return `${name}.${ext}`
+  },
+})
+
+// Upload the image
+const uploadImg = multer({ storage: storage }).single('image')
+exports.uploadProfileImg = catchAsync(async (req, res) => {
+  uploadImg(req, res, async (err) => {
+    if (err) {
+      return res.status(404).json({
+        status: 'failed',
+        error: err,
+      })
+    }
+    if (req.user.avatar) {
+      const oldImg = path.join(__dirname, `../uploads/${req.user.avatar}`)
+      console.log(oldImg)
+      if (fs.existsSync(oldImg)) {
+        fs.unlink(oldImg, (error) => {
+          console.log(error)
+        })
+      }
+    }
+
+    await User.findOneAndUpdate(
+      { email: req.user.email },
+      { $set: { avatar: req.filename } }
+    )
+    return res.status(200).json({
+      status: 'success',
+      url: `https://${req.headers.host}/${req.filename}`,
+    })
   })
 })

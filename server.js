@@ -22,7 +22,7 @@ mongoose
   .catch((err) => {
     console.log(err)
   })
-
+mongoose.set('debug', true)
 const port = process.env.PORT || 3000
 
 app.listen(port, () => {

@@ -27,4 +27,8 @@ router
   .route('/watch-list/remove/:id')
   .get(authController.protect, authController.removeFromWatchList)
 
+router
+  .route('/upload/profile-img')
+  .post(authController.protect, authController.uploadProfileImg)
+
 module.exports = router

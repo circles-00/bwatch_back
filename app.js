@@ -1,5 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
+const path = require('path')
 const userRouter = require('./routes/userRoutes')
 const movieRouter = require('./routes/movieRoutes')
 const actorRouter = require('./routes/actorRoutes')
@@ -12,6 +13,9 @@ if (process.env.NODE_ENV === 'development') {
 
 // @@desc Middleware for parsing request/response body
 app.use(express.json())
+
+//@@desc Serve static files
+app.use(express.static(path.join(__dirname, 'uploads')))
 
 //@@desc Use defined routes
 app.use('/api/v1/users', userRouter)
