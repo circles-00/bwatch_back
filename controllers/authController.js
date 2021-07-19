@@ -344,3 +344,15 @@ exports.uploadProfileImg = catchAsync(async (req, res) => {
     })
   })
 })
+
+exports.getProfileImg = catchAsync(async (req, res, next) => {
+  if (req.user.avatar !== undefined) {
+    return res.status(200).json({
+      status: 'success',
+      url: `https://${req.headers.host}/${req.user.avatar}`,
+    })
+  }
+  return res.status(404).json({
+    status: 'failed',
+  })
+})

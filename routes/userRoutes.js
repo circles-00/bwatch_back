@@ -31,4 +31,8 @@ router
   .route('/upload/profile-img')
   .post(authController.protect, authController.uploadProfileImg)
 
+router
+  .route('/profile-img')
+  .get(authController.protect, authController.getProfileImg)
+
 module.exports = router
