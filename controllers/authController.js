@@ -309,6 +309,14 @@ const storage = multer.diskStorage({
 // Upload the image
 const uploadImg = multer({ storage: storage }).single('image')
 exports.uploadProfileImg = catchAsync(async (req, res) => {
+  if (!fs.existsSync(path.join(__dirname, `../uploads/`))) {
+    fs.mkdir(path.join(__dirname, `../uploads/`), (fserr) => {
+      if (fserr) {
+        console.log(fserr)
+      }
+      console.log('Successfully created folder')
+    })
+  }
   uploadImg(req, res, async (err) => {
     if (err) {
       return res.status(404).json({
