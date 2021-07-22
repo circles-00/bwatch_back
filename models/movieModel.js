@@ -66,3 +66,14 @@ exports.upcomingMovies = async () => {
     console.log(err)
   }
 }
+
+exports.movieCast = async (id) => {
+  try {
+    const res = await axios(
+      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=3951320f561eee83f44ed08fc503df73&language=en-US`
+    )
+    return res.data
+  } catch (err) {
+    console.log(err)
+  }
+}
