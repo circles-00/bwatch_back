@@ -62,3 +62,12 @@ exports.getMovieCast = CatchAsync(async (req, res, next) => {
     data,
   })
 })
+
+exports.getReviews = CatchAsync(async (req, res, next) => {
+  const data = await Movie.movieReviews(req.params.id)
+
+  res.status(200).json({
+    status: 'success',
+    data,
+  })
+})

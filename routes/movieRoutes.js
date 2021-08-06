@@ -10,5 +10,6 @@ router.route('/search').post(movieController.searchMovies)
 router.route('/popular').get(movieController.getPopularMovies)
 router.route('/upcoming').get(movieController.getUpcomingMovies)
 router.route('/cast/:id').get(movieController.getMovieCast)
+router.route('/reviews/:id').get(movieController.getReviews)
 
 module.exports = router
