@@ -356,3 +356,14 @@ exports.getProfileImg = catchAsync(async (req, res, next) => {
     })
   })
 })
+
+exports.getUsers = catchAsync(async (req, res, next) => {
+  User.find({ firstName: new RegExp(req.body.user, 'i') }, (err, docs) => {
+    if (docs) {
+      return res.status(200).json({
+        status: 'success',
+        data: docs,
+      })
+    }
+  })
+})

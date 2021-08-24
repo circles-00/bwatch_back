@@ -28,5 +28,6 @@ router
   .post(authController.protect, authController.uploadProfileImg)
 
 router.route('/profile-img').get(authController.getProfileImg)
+router.route('/search').post(authController.getUsers)
 
 module.exports = router
