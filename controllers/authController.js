@@ -358,12 +358,18 @@ exports.getProfileImg = catchAsync(async (req, res, next) => {
 })
 
 exports.getUsers = catchAsync(async (req, res, next) => {
-  User.find({ firstName: new RegExp(req.body.user, 'i') }, (err, docs) => {
-    if (docs && req.body.user !== '') {
-      return res.status(200).json({
-        status: 'success',
-        data: docs,
-      })
-    }
-  })
+  if (req.body.user.length > 0) {
+    User.find({ firstName: new RegExp(req.body.user, 'i') }, (err, docs) => {
+      if (docs) {
+        return res.status(200).json({
+          status: 'success',
+          data: docs,
+        })
+      }
+    })
+  } else {
+    return res.status(404).json({
+      status: 'failed',
+    })
+  }
 })
