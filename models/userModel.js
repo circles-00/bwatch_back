@@ -77,10 +77,6 @@ userSchema.methods.changedPasswordAfter = async function (JWTTimestamp) {
   return false
 }
 
-userSchema.methods.FavoriteMovies = async function () {
-  return this.favMovies
-}
-
 userSchema.methods.WatchList = async function () {
   return this.watchList
 }

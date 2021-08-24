@@ -132,17 +132,16 @@ exports.protect = catchAsync(async (req, res, next) => {
 
 // Favorite List
 exports.getFavorites = catchAsync(async (req, res, next) => {
-  const data = await req.user.FavoriteMovies()
-
-  if (data !== undefined) {
-    return res.status(200).json({
-      status: 'success',
-      data,
+  User.findOne({ _id: req.headers.id }, (err, obj) => {
+    if (obj) {
+      return res.status(200).json({
+        status: 'success',
+        data: obj.favMovies,
+      })
+    }
+    return res.status(404).json({
+      status: 'failed',
     })
-  }
-
-  return res.status(404).json({
-    status: 'failed',
   })
 })
 
@@ -214,17 +213,16 @@ exports.removeFavoriteMovies = catchAsync(async (req, res, next) => {
 
 // Watch-List
 exports.getWatchList = catchAsync(async (req, res, next) => {
-  const data = await req.user.WatchList()
-
-  if (data !== undefined) {
-    return res.status(200).json({
-      status: 'success',
-      data,
+  User.findOne({ _id: req.headers.id }, (err, obj) => {
+    if (obj) {
+      return res.status(200).json({
+        status: 'success',
+        data: obj.watchList,
+      })
+    }
+    return res.status(404).json({
+      status: 'failed',
     })
-  }
-
-  return res.status(404).json({
-    status: 'failed',
   })
 })
 
@@ -346,13 +344,15 @@ exports.uploadProfileImg = catchAsync(async (req, res) => {
 })
 
 exports.getProfileImg = catchAsync(async (req, res, next) => {
-  if (req.user.avatar !== undefined) {
-    return res.status(200).json({
-      status: 'success',
-      url: `https://${req.headers.host}/${req.user.avatar}`,
+  User.findOne({ _id: req.headers.id }, (err, obj) => {
+    if (obj) {
+      return res.status(200).json({
+        status: 'success',
+        url: `https://${req.headers.host}/${obj.avatar}`,
+      })
+    }
+    return res.status(404).json({
+      status: 'failed',
     })
-  }
-  return res.status(404).json({
-    status: 'failed',
   })
 })
